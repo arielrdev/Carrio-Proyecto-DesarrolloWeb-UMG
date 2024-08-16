@@ -107,6 +107,7 @@ ul {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#741d51', endColorstr='#e44e52',GradientType=1 ); /* IE6-9 */
 }
 
+
 .barra p {
     margin:0;
     color: white;
@@ -190,6 +191,9 @@ ul {
 	line-height: 20px;
 }
 
+#total-pagar span {
+    font-weight: 700;
+}
 
 .footer {
     margin-top: 40px;

@@ -4,6 +4,8 @@ const contenedorCarrito = document.querySelector('#lista-carrito tbody')
 const vaciarCarritoBtn = document.querySelector('#vaciar-carrito')
 const listaCursos = document.querySelector('#lista-cursos')
 const notificacionCarrito = document.getElementById('notificacion-carrito')
+const totalPagarElemento = document.getElementById('total-pagar')
+
 let articulosCarrito = [];
 
 cargarEventListeners()
@@ -18,6 +20,12 @@ function cargarEventListeners() {
     /** Vaciar Carrito */
     vaciarCarritoBtn.addEventListener('click', vaciarCarrito)
 
+    /** Cargar carrito desde LocalStorage */
+    document.addEventListener('DOMContentLoaded', () => {
+        articulosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        carritoHTML();
+    })
+
 }
 
 //Funciones
@@ -27,9 +35,8 @@ function agregarCurso(e) {
     /** Se ASEGURA que el usuario haya presionado el BTN AGREGAR AL CARRITO */
     if(e.target.classList.contains('agregar-carrito')) {
        const cursoSelecionado = e.target.parentElement.parentElement    
-       leerDatosCurso(cursoSelecionado)
+       leerDatosCurso(cursoSelecionado)        
     }
-
 }
 
 /** Eliminar elementos del carrito */
@@ -41,6 +48,7 @@ function eliminarCurso(e) {
     articulosCarrito = articulosCarrito.filter( curso => curso.id !== cursoId)
     
     carritoHTML() /** Recorre el HTML del carrito - Imprimir */
+    sincronizarLocalStorage();
     }
 
 }
@@ -51,7 +59,7 @@ function leerDatosCurso(curso) {
     const infoCurso = {
         imagen: curso.querySelector('img').src,
         titulo: curso.querySelector('h4').textContent,
-        precio: curso.querySelector('.precio span').textContent,
+        precio: parseFloat(curso.querySelector('.precio span').textContent.replace('$', '')), // Convertir a número
         id: curso.querySelector('a').getAttribute('data-id'),
         cantidad: 1
     }
@@ -77,7 +85,8 @@ function leerDatosCurso(curso) {
     }
 
     //Llamar funcion
-    carritoHTML()
+    carritoHTML();
+    sincronizarLocalStorage();
 }
 
 //Muestra el carrito de compras en el HTML
@@ -104,7 +113,8 @@ function carritoHTML() {
         contenedorCarrito.appendChild(row)
     });
     
-    actualizarNotificacionCarrito()
+    actualizarNotificacionCarrito();
+    actualizarTotalPagar();
 }
 
 /** Elimina los articulos del tbody */
@@ -135,5 +145,28 @@ function vaciarCarrito() {
     limpiarHTML()
 
     /** Actualizar la notificacion */
-    actualizarNotificacionCarrito()
+    actualizarNotificacionCarrito();
+    sincronizarLocalStorage();
+    actualizarTotalPagar();
 }
+
+function sincronizarLocalStorage() {
+    localStorage.setItem('carrito', JSON.stringify(articulosCarrito));
+}
+
+function actualizarTotalPagar() {
+    const totalPagar = calcularTotalPagar();
+
+    if(articulosCarrito.length) {
+        totalPagarElemento.innerHTML = `Total a Pagar: <span>Q ${totalPagar.toFixed(2)}</span>`;
+        totalPagarElemento.style.display = 'block';
+    }else {
+        totalPagarElemento.style.display = 'none';
+    }
+}
+
+
+function calcularTotalPagar() {
+    return articulosCarrito.reduce((total, curso) => total + (curso.precio * curso.cantidad), 0);
+}
+
