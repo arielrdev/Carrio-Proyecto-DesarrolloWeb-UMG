@@ -3,16 +3,21 @@ const carrito = document.querySelector('#carrito')
 const contenedorCarrito = document.querySelector('#lista-carrito tbody')
 const vaciarCarritoBtn = document.querySelector('#vaciar-carrito')
 const listaCursos = document.querySelector('#lista-cursos')
+const notificacionCarrito = document.getElementById('notificacion-carrito')
 let articulosCarrito = [];
 
 cargarEventListeners()
 
 function cargarEventListeners() {
-    //Cuando agregar un curso presionando "Agregar al Carrito"
+    /** Cuando agregar un curso presionando "Agregar al Carrito" */
     listaCursos.addEventListener('click', agregarCurso)
 
     /** Eliminar articulo del carrito */
     carrito.addEventListener('click', eliminarCurso)
+
+    /** Vaciar Carrito */
+    vaciarCarritoBtn.addEventListener('click', vaciarCarrito)
+
 }
 
 //Funciones
@@ -24,6 +29,7 @@ function agregarCurso(e) {
        const cursoSelecionado = e.target.parentElement.parentElement    
        leerDatosCurso(cursoSelecionado)
     }
+
 }
 
 /** Eliminar elementos del carrito */
@@ -36,6 +42,7 @@ function eliminarCurso(e) {
     
     carritoHTML() /** Recorre el HTML del carrito - Imprimir */
     }
+
 }
 
 //Lee el contenido del HTML al que le dimos clikc y extrae la informacion del articulo
@@ -95,7 +102,9 @@ function carritoHTML() {
 
         //Agrega el HTML del carrito en el tbody
         contenedorCarrito.appendChild(row)
-    })
+    });
+    
+    actualizarNotificacionCarrito()
 }
 
 /** Elimina los articulos del tbody */
@@ -103,4 +112,28 @@ function limpiarHTML() {
     while(contenedorCarrito.firstChild) {
         contenedorCarrito.removeChild(contenedorCarrito.firstChild)
     }
+}
+
+/** Notificacion */
+function actualizarNotificacionCarrito() {
+    const totalArticulos = articulosCarrito.reduce((total, curso) => total + curso.cantidad, 0);
+    
+    if (totalArticulos > 0) {
+        notificacionCarrito.classList.add('notificacion-carrito--visible');
+        notificacionCarrito.setAttribute('data-cantidadnotificacion', totalArticulos);
+    } else {
+        notificacionCarrito.classList.remove('notificacion-carrito--visible');
+        notificacionCarrito.setAttribute('data-cantidadnotificacion', 0);
+    }
+}
+
+function vaciarCarrito() {
+    /** Vaciar el arreglo de articulos */
+    articulosCarrito = []
+    
+    /** Limpiar HTML */
+    limpiarHTML()
+
+    /** Actualizar la notificacion */
+    actualizarNotificacionCarrito()
 }

@@ -170,6 +170,27 @@ ul {
 }
 
 
+.notificacion-carrito {
+	visibility: hidden;
+}
+.notificacion-carrito--visible {
+	visibility: visible;
+}
+.notificacion-carrito::before {
+	content: attr(data-cantidadnotificacion);
+	position: absolute;
+	top: -1rem;
+	left: 22px;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: #eb4545;
+	color: white;
+	text-align: center;
+	line-height: 20px;
+}
+
+
 .footer {
     margin-top: 40px;
     border-top:1px solid #aaa;;
