@@ -1,0 +1,9 @@
+<svg width="250" height="80" viewBox="0 0 250 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fondo del logo -->
+    <rect width="100%" height="100%" fill="transparent"/>
+    
+    <!-- Texto del logo sin espacio entre 'Dev' y 'EM' -->
+    <text x="10" y="60" font-family="Arial, sans-serif" font-size="40" font-weight="bold">
+        <tspan fill="#007acc">Dev</tspan><tspan fill="#ff5722">EM</tspan>
+    </text>
+</svg>

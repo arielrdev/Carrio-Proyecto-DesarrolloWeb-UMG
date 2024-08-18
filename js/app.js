@@ -60,7 +60,7 @@ function leerDatosProducto(producto) {
     const infoProducto = {
         imagen: producto.querySelector('img').src,
         titulo: producto.querySelector('h4').textContent,
-        precio: parseFloat(producto.querySelector('.precio span').textContent.replace('$', '')), // Convertir a número
+        precio: parseFloat(producto.querySelector('.precio span').textContent.replace('Q', '')), // Convertir a número
         id: producto.querySelector('a').getAttribute('data-id'),
         cantidad: 1
     }
