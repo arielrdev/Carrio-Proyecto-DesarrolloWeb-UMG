@@ -6,16 +6,17 @@ const listaCursos = document.querySelector('#lista-cursos')
 const notificacionCarrito = document.getElementById('notificacion-carrito')
 const totalPagarElemento = document.getElementById('total-pagar')
 
+
 let articulosCarrito = [];
 
 cargarEventListeners()
 
 function cargarEventListeners() {
     /** Cuando agregar un curso presionando "Agregar al Carrito" */
-    listaCursos.addEventListener('click', agregarCurso)
+    listaCursos.addEventListener('click', agregarProducto)
 
     /** Eliminar articulo del carrito */
-    carrito.addEventListener('click', eliminarCurso)
+    carrito.addEventListener('click', eliminarProducto)
 
     /** Vaciar Carrito */
     vaciarCarritoBtn.addEventListener('click', vaciarCarrito)
@@ -29,23 +30,23 @@ function cargarEventListeners() {
 }
 
 //Funciones
-function agregarCurso(e) {
+function agregarProducto(e) {
     e.preventDefault()
 
     /** Se ASEGURA que el usuario haya presionado el BTN AGREGAR AL CARRITO */
     if(e.target.classList.contains('agregar-carrito')) {
-       const cursoSelecionado = e.target.parentElement.parentElement    
-       leerDatosCurso(cursoSelecionado)        
+       const productoSelecionado = e.target.parentElement.parentElement    
+       leerDatosProducto(productoSelecionado)        
     }
 }
 
 /** Eliminar elementos del carrito */
-function eliminarCurso(e) {
+function eliminarProducto(e) {
     if(e.target.classList.contains('borrar-curso')) {
-    const cursoId = e.target.getAttribute('data-id')
+    const productoId = e.target.getAttribute('data-id')
     
     /** Elimina del arreglo de articulosCarrito por el data-id */
-    articulosCarrito = articulosCarrito.filter( curso => curso.id !== cursoId)
+    articulosCarrito = articulosCarrito.filter( producto => producto.id !== productoId)
     
     carritoHTML() /** Recorre el HTML del carrito - Imprimir */
     sincronizarLocalStorage();
@@ -54,34 +55,34 @@ function eliminarCurso(e) {
 }
 
 //Lee el contenido del HTML al que le dimos clikc y extrae la informacion del articulo
-function leerDatosCurso(curso) {
+function leerDatosProducto(producto) {
     //Crear un objeto con el contenido del curso actual
-    const infoCurso = {
-        imagen: curso.querySelector('img').src,
-        titulo: curso.querySelector('h4').textContent,
-        precio: parseFloat(curso.querySelector('.precio span').textContent.replace('$', '')), // Convertir a número
-        id: curso.querySelector('a').getAttribute('data-id'),
+    const infoProducto = {
+        imagen: producto.querySelector('img').src,
+        titulo: producto.querySelector('h4').textContent,
+        precio: parseFloat(producto.querySelector('.precio span').textContent.replace('$', '')), // Convertir a número
+        id: producto.querySelector('a').getAttribute('data-id'),
         cantidad: 1
     }
 
     /*Revisa si un elemento ya existe en el carrito .some recorre el objeto
     */
-    const existe = articulosCarrito.some( curso => curso.id === infoCurso.id );
+    const existe = articulosCarrito.some( producto => producto.id === infoProducto.id );
     if(existe) {
         /** Actualizar la Cantidad */
-        const articulos = articulosCarrito.map( (curso) => {
-            if(curso.id === infoCurso.id ) {
-                curso.cantidad++;
-                return curso; // retorna el objeto actualizado
+        const articulos = articulosCarrito.map( (producto) => {
+            if(producto.id === infoProducto.id ) {
+                producto.cantidad++;
+                return producto; // retorna el objeto actualizado
             }else{
-                return curso; // retorna los objetos que no son duplicados
+                return producto; // retorna los objetos que no son duplicados
             }
         });
 
         articulosCarrito = [...articulos]
     }else {
         /** Agregar al carrito */
-        articulosCarrito = [...articulosCarrito, infoCurso];
+        articulosCarrito = [...articulosCarrito, infoProducto];
     }
 
     //Llamar funcion
@@ -94,8 +95,8 @@ function carritoHTML() {
     //Antes de crear el HTML se debe limpiar el HTML
     limpiarHTML()
 
-    articulosCarrito.forEach( (curso) => {
-        const { imagen, titulo, precio, cantidad, id } = curso
+    articulosCarrito.forEach( (producto) => {
+        const { imagen, titulo, precio, cantidad, id } = producto;
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>
@@ -126,7 +127,7 @@ function limpiarHTML() {
 
 /** Notificacion */
 function actualizarNotificacionCarrito() {
-    const totalArticulos = articulosCarrito.reduce((total, curso) => total + curso.cantidad, 0);
+    const totalArticulos = articulosCarrito.reduce((total, producto) => total + producto.cantidad, 0);
     
     if (totalArticulos > 0) {
         notificacionCarrito.classList.add('notificacion-carrito--visible');
@@ -169,4 +170,25 @@ function actualizarTotalPagar() {
 function calcularTotalPagar() {
     return articulosCarrito.reduce((total, curso) => total + (curso.precio * curso.cantidad), 0);
 }
+
+
+/** Arrastra y Soltar */
+
+function allowDrop(event) {
+    event.preventDefault(); // Permitir que el carrito acepte el elemento soltado.
+}
+
+function drop(event) {
+    event.preventDefault();
+    const data = event.dataTransfer.getData("text");
+    const product = document.getElementById(data);
+    leerDatosProducto(product)
+}
+
+function drag(event) {
+    event.dataTransfer.setData("text", event.target.closest('.card').id); // Guardar el ID del producto que se está arrastrando.
+}
+
+
+
 

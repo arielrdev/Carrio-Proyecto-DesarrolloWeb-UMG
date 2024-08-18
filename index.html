@@ -20,7 +20,7 @@
                 <ul>
                     <li class="submenu">
                             <span id="notificacion-carrito" class="notificacion-carrito" data-cantidadnotificacion="0"></span>
-                            <img src="img/cart.png" id="img-carrito">
+                            <img src="img/cart.png" id="img-carrito" ondrop="drop(event)" ondragover="allowDrop(event)">
                             
                             <div id="carrito">
                                     
@@ -88,7 +88,7 @@
         <h1 id="encabezado" class="encabezado">Cursos En Línea</h1>
         <div class="row">
             <div class="four columns">
-                <div class="card">
+                <div class="card" draggable="true" id="product-1" ondragstart="drag(event)">
                     <img src="img/curso1.jpg" class="imagen-curso u-full-width">
                     <div class="info-card">
                         <h4>HTML5, CSS3, JavaScript para Principiantes</h4>
@@ -100,7 +100,7 @@
                 </div> <!--.card-->
             </div>
             <div class="four columns">
-                    <div class="card">
+                    <div class="card" draggable="true" id="product-2" ondragstart="drag(event)">
                         <img src="img/curso2.jpg" class="imagen-curso u-full-width">
                         <div class="info-card">
                             <h4>Curso de Comida Vegetariana</h4>
@@ -112,7 +112,7 @@
                     </div>
             </div>
             <div class="four columns">
-                    <div class="card">
+                    <div class="card" draggable="true" id="product-3" ondragstart="drag(event)">
                         <img src="img/curso3.jpg" class="imagen-curso u-full-width">
                         <div class="info-card">
                             <h4>Guitarra para Principiantes</h4>
@@ -127,7 +127,7 @@
         </div> <!--.row-->
         <div class="row">
             <div class="four columns">
-                <div class="card">
+                <div class="card" draggable="true" id="product-4" ondragstart="drag(event)">
                     <img src="img/curso4.jpg" class="imagen-curso u-full-width">
                     <div class="info-card">
                         <h4>Huerto en tu casa</h4>
@@ -139,7 +139,7 @@
                 </div> <!--.card-->
             </div>
             <div class="four columns">
-                    <div class="card">
+                    <div class="card" draggable="true" id="product-5" ondragstart="drag(event)">
                         <img src="img/curso5.jpg" class="imagen-curso u-full-width">
                         <div class="info-card">
                             <h4>Decoración con productos de tu hogar</h4>
@@ -151,7 +151,7 @@
                     </div> <!--.card-->
             </div>
             <div class="four columns">
-                    <div class="card">
+                    <div class="card" draggable="true" id="product-6" ondragstart="drag(event)">
                         <img src="img/curso1.jpg" class="imagen-curso u-full-width">
                         <div class="info-card">
                             <h4>Diseño Web para Principiantes</h4>
@@ -165,7 +165,7 @@
         </div> <!--.row-->
         <div class="row">
             <div class="four columns">
-                <div class="card">
+                <div class="card" draggable="true" id="product-7" ondragstart="drag(event)">
                     <img src="img/curso2.jpg" class="imagen-curso u-full-width">
                     <div class="info-card">
                         <h4>Comida Mexicana para principiantes</h4>
@@ -177,7 +177,7 @@
                 </div> <!--.card-->
             </div>
             <div class="four columns">
-                    <div class="card">
+                    <div class="card" draggable="true" id="product-8" ondragstart="drag(event)">
                         <img src="img/curso3.jpg" class="imagen-curso u-full-width">
                         <div class="info-card">
                             <h4>Estudio Musical en tu casa</h4>
@@ -189,7 +189,7 @@
                     </div> <!--.card-->
             </div>
             <div class="four columns">
-                    <div class="card">
+                    <div class="card" draggable="true" id="product-9" ondragstart="drag(event)">
                         <img src="img/curso4.jpg" class="imagen-curso u-full-width">
                         <div class="info-card">
                             <h4>Cosecha tus propias frutas y verduras</h4>
@@ -203,7 +203,7 @@
         </div> <!--.row-->
         <div class="row">
                 <div class="four columns">
-                    <div class="card">
+                    <div class="card" draggable="true" id="product-10" ondragstart="drag(event)">
                         <img src="img/curso5.jpg" class="imagen-curso u-full-width">
                         <div class="info-card">
                             <h4>Prepara galletas caseras</h4>
@@ -215,7 +215,7 @@
                     </div> <!--.card-->
                 </div>
                 <div class="four columns">
-                        <div class="card">
+                        <div class="card" draggable="true" id="product-11" ondragstart="drag(event)">
                             <img src="img/curso1.jpg" class="imagen-curso u-full-width">
                             <div class="info-card">
                                 <h4>JavaScript Moderno con ES6</h4>
@@ -227,7 +227,7 @@
                         </div> <!--.card-->
                 </div>
                 <div class="four columns">
-                        <div class="card">
+                        <div class="card" draggable="true" id="product-12" ondragstart="drag(event)">
                             <img src="img/curso2.jpg" class="imagen-curso u-full-width">
                             <div class="info-card">
                                 <h4>100 Recetas de Comida Natural</h4>
