@@ -11,7 +11,7 @@ const btnSumarCantidad = document.querySelectorAll('.sumar-cantidad')
 
 let articulosCarrito = [];
 
-cargarEventListeners()
+cargarEventListeners();
 
 function cargarEventListeners() {
     /** Cargar carrito desde LocalStorage */
