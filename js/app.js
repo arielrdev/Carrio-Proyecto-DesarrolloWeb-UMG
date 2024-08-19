@@ -1,10 +1,12 @@
 // Variables
-const carrito = document.querySelector('#carrito')
-const contenedorCarrito = document.querySelector('#lista-carrito tbody')
-const vaciarCarritoBtn = document.querySelector('#vaciar-carrito')
-const listaCursos = document.querySelector('#lista-cursos')
-const notificacionCarrito = document.getElementById('notificacion-carrito')
-const totalPagarElemento = document.getElementById('total-pagar')
+const carrito = document.querySelector('#carrito');
+const contenedorCarrito = document.querySelector('#lista-carrito tbody');
+const vaciarCarritoBtn = document.querySelector('#vaciar-carrito');
+const listaCursos = document.querySelector('#lista-cursos');
+const notificacionCarrito = document.getElementById('notificacion-carrito');
+const totalPagarElemento = document.getElementById('total-pagar');
+const btnRestarCantidad = document.querySelectorAll('.restar-cantidad')
+const btnSumarCantidad = document.querySelectorAll('.sumar-cantidad')
 
 
 let articulosCarrito = [];
@@ -12,6 +14,12 @@ let articulosCarrito = [];
 cargarEventListeners()
 
 function cargarEventListeners() {
+    /** Cargar carrito desde LocalStorage */
+    document.addEventListener('DOMContentLoaded', () => {
+        articulosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        carritoHTML();
+    })
+
     /** Cuando agregar un curso presionando "Agregar al Carrito" */
     listaCursos.addEventListener('click', agregarProducto)
 
@@ -20,13 +28,6 @@ function cargarEventListeners() {
 
     /** Vaciar Carrito */
     vaciarCarritoBtn.addEventListener('click', vaciarCarrito)
-
-    /** Cargar carrito desde LocalStorage */
-    document.addEventListener('DOMContentLoaded', () => {
-        articulosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        carritoHTML();
-    })
-
 }
 
 //Funciones
@@ -104,7 +105,11 @@ function carritoHTML() {
             </td>
             <td>${titulo}</td>
             <td>${precio}</td>
-            <td>${cantidad}</td>
+            <td>
+                <button class="restar-cantidad btn btn-dark" data-id=${id}>-</button>
+                ${cantidad}
+                <button class="sumar-cantidad btn btn-dark" data-id=${id}>+</button>
+            </td>
             <td>
                 <a href="#" class="borrar-curso" data-id=${id}> X </a>
             </td>
@@ -116,6 +121,7 @@ function carritoHTML() {
     
     actualizarNotificacionCarrito();
     actualizarTotalPagar();
+    agregarEventListenersCantidad();
 }
 
 /** Elimina los articulos del tbody */
@@ -189,6 +195,51 @@ function drag(event) {
     event.dataTransfer.setData("text", event.target.closest('.card').id); // Guardar el ID del producto que se está arrastrando.
 }
 
+
+/** Botones - RESTAR - SUMAR -  */
+function agregarEventListenersCantidad() {
+    const botonesRestar = document.querySelectorAll('.restar-cantidad');
+    const botonesSumar = document.querySelectorAll('.sumar-cantidad');
+
+    botonesRestar.forEach(boton => {
+        boton.addEventListener('click', (e) => {
+            const id = e.target.getAttribute('data-id');
+            restarCantidad(id);
+        });
+    });
+
+    botonesSumar.forEach(boton => {
+        boton.addEventListener('click', (e) => {
+            const id = e.target.getAttribute('data-id');
+            sumarCantidad(id);
+        });
+    });
+
+    sincronizarLocalStorage()
+
+}
+
+function restarCantidad(id) {
+    const producto = articulosCarrito.find(producto => producto.id === id);
+
+    if(producto.cantidad > 1) {
+        producto.cantidad--;
+    }else{
+        articulosCarrito = articulosCarrito.filter(producto => producto.id !== id);
+    }
+
+    carritoHTML();
+}
+
+
+function sumarCantidad(id) {
+    const producto = articulosCarrito.find(producto => producto.id === id);
+    if(producto.cantidad < 9) {
+        producto.cantidad++
+    }
+    
+    carritoHTML()
+}
 
 
 
