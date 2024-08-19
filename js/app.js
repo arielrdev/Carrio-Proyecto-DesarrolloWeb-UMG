@@ -8,6 +8,7 @@ const totalPagarElemento = document.getElementById('total-pagar');
 const btnRestarCantidad = document.querySelectorAll('.restar-cantidad')
 const btnSumarCantidad = document.querySelectorAll('.sumar-cantidad')
 
+const MaxArticulos = 9;
 
 let articulosCarrito = [];
 
@@ -73,7 +74,10 @@ function leerDatosProducto(producto) {
         /** Actualizar la Cantidad */
         const articulos = articulosCarrito.map( (producto) => {
             if(producto.id === infoProducto.id ) {
-                producto.cantidad++;
+                /** Verificar si la cantidad acutal es menor al maximo permitido */
+                if(producto.cantidad < MaxArticulos) {
+                    producto.cantidad++;
+                }
                 return producto; // retorna el objeto actualizado
             }else{
                 return producto; // retorna los objetos que no son duplicados
@@ -234,7 +238,7 @@ function restarCantidad(id) {
 
 function sumarCantidad(id) {
     const producto = articulosCarrito.find(producto => producto.id === id);
-    if(producto.cantidad < 9) {
+    if(producto.cantidad < MaxArticulos) {
         producto.cantidad++
     }
     
