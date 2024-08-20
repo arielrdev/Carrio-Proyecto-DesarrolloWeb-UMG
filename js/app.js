@@ -219,8 +219,6 @@ function agregarEventListenersCantidad() {
         });
     });
 
-    sincronizarLocalStorage()
-
 }
 
 function restarCantidad(id) {
@@ -233,6 +231,7 @@ function restarCantidad(id) {
     }
 
     carritoHTML();
+    sincronizarLocalStorage();
 }
 
 
@@ -242,7 +241,8 @@ function sumarCantidad(id) {
         producto.cantidad++
     }
     
-    carritoHTML()
+    carritoHTML();
+    sincronizarLocalStorage();
 }
 
 
