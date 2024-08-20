@@ -5,15 +5,43 @@ const MaxArticulos = 9;
 const carrito = document.querySelector('#carrito');
 const contenedorCarrito = document.querySelector('#lista-carrito tbody');
 const totalPagarElemento = document.getElementById('total-pagar');
+const confirmarBtn = document.querySelector('.agregar-carrito');
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Cargar carrito desde localStorage
-    articulosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    carritoHTML(); 
 
-    cargarEventListenersConfirmar();
-});
+cargarEventListeners();
+// Eventos para la página de confirmación
+function cargarEventListeners() {
+    document.addEventListener('DOMContentLoaded', () => {
+        // Cargar carrito desde localStorage
+        articulosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        carritoHTML(); 
+    });
+    
+    carrito.addEventListener('click', eliminarProducto);
+    confirmarBtn.addEventListener('click', confirmarOrden);
+}
+
+/** Botones - RESTAR - SUMAR -  */
+function agregarEventListenersCantidad() {
+    const botonesRestar = document.querySelectorAll('.restar-cantidad');
+    const botonesSumar = document.querySelectorAll('.sumar-cantidad');
+
+    botonesRestar.forEach(boton => {
+        boton.addEventListener('click', (e) => {
+            const id = e.target.getAttribute('data-id');
+            restarCantidad(id);
+        });
+    });
+
+    botonesSumar.forEach(boton => {
+        boton.addEventListener('click', (e) => {
+            const id = e.target.getAttribute('data-id');
+            sumarCantidad(id);
+        });
+    });
+
+}
 
 /**
  * Funciones comunes para ambas páginas
@@ -34,7 +62,7 @@ function carritoHTML() {
                 <button class="sumar-cantidad btn btn-dark" data-id=${id}>+</button>
             </td>
             <td>
-               <a class="button input btn-red" href="#">Eliminar</a>
+               <a href="#" class="borrar-producto button input btn-red" data-id=${id}>Eliminar</a>
 
                 <a class="button input btn-black" href="tienda.html">Ver Carrito</a>
             </td>
@@ -43,6 +71,8 @@ function carritoHTML() {
     });
 
     actualizarTotalPagar();
+    agregarEventListenersCantidad();
+
 }
 
 function limpiarHTML() {
@@ -53,21 +83,52 @@ function limpiarHTML() {
 
 function actualizarTotalPagar() {
     const totalPagar = articulosCarrito.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
-    totalPagarElemento.textContent = `Total a pagar: Q${totalPagar.toFixed(2)}`;
+    totalPagarElemento.innerHTML = `Total a Pagar: <span>Q ${totalPagar.toFixed(2)}</span>`;
 }
 
-
-// Eventos para la página de confirmación
-function cargarEventListenersConfirmar() {
-    const confirmarBtn = document.querySelector('.agregar-carrito');
+function eliminarProducto(e) {
+    if(e.target.classList.contains('borrar-producto')) {
+    const productoId = e.target.getAttribute('data-id')
     
-    confirmarBtn.addEventListener('click', confirmarOrden);
+    /** Elimina del arreglo de articulosCarrito por el data-id */
+    articulosCarrito = articulosCarrito.filter( producto => producto.id !== productoId)
+    
+    carritoHTML() /** Recorre el HTML del carrito - Imprimir */
+    sincronizarLocalStorage();
+    }
 }
+
 
 function confirmarOrden(e) {
     e.preventDefault();
     alert('Orden confirmada. ¡Gracias por su compra!');
     vaciarCarrito(); // TODO: implementar funcion
+}
+
+
+function restarCantidad(id) {
+    console.log('desde restarCantidad');
+    
+    const producto = articulosCarrito.find(producto => producto.id === id);
+
+    if(producto.cantidad > 1) {
+        producto.cantidad--;
+    }else{
+        articulosCarrito = articulosCarrito.filter(producto => producto.id !== id);
+    }
+
+    carritoHTML();
+    sincronizarLocalStorage();
+}
+
+function sumarCantidad(id) {
+    const producto = articulosCarrito.find(producto => producto.id === id);
+    if(producto.cantidad < MaxArticulos) {
+        producto.cantidad++
+    }
+    
+    carritoHTML();
+    sincronizarLocalStorage();
 }
 
 

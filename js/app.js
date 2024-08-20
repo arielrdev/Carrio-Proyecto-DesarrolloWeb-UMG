@@ -5,8 +5,7 @@ const vaciarCarritoBtn = document.querySelector('#vaciar-carrito');
 const listaCursos = document.querySelector('#lista-cursos');
 const notificacionCarrito = document.getElementById('notificacion-carrito');
 const totalPagarElemento = document.getElementById('total-pagar');
-const btnRestarCantidad = document.querySelectorAll('.restar-cantidad')
-const btnSumarCantidad = document.querySelectorAll('.sumar-cantidad')
+
 
 const MaxArticulos = 9;
 
