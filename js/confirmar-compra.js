@@ -101,13 +101,25 @@ function eliminarProducto(e) {
 
 function confirmarOrden(e) {
     e.preventDefault();
-    alert('Orden confirmada. ¡Gracias por su compra!');
-    vaciarCarrito(); // TODO: implementar funcion
+    
+    // Mostrar la notificación
+    const toast = document.getElementById('toast');
+    toast.classList.remove('hidden');
+    toast.classList.add('show');
+    
+
+    // Ocultar la notificación después de 3 segundos
+    setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hidden');
+    }, 3000); // Tiempo en milisegundos
+    
+    // Vaciar el carrito
+    vaciarCarrito(); 
 }
 
 
 function restarCantidad(id) {
-    console.log('desde restarCantidad');
     
     const producto = articulosCarrito.find(producto => producto.id === id);
 
@@ -135,4 +147,16 @@ function sumarCantidad(id) {
 // Sincroniza el carrito con localStorage
 function sincronizarLocalStorage() {
     localStorage.setItem('carrito', JSON.stringify(articulosCarrito));
+}
+
+function vaciarCarrito() {
+    /** Vaciar el arreglo de articulos */
+    articulosCarrito = []
+    
+    /** Limpiar HTML */
+    limpiarHTML()
+
+    /** Actualizar la notificacion */
+    sincronizarLocalStorage();
+    actualizarTotalPagar();
 }
