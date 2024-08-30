@@ -5,7 +5,7 @@ const vaciarCarritoBtn = document.querySelector('#vaciar-carrito');
 const listaCursos = document.querySelector('#lista-cursos');
 const notificacionCarrito = document.getElementById('notificacion-carrito');
 const totalPagarElemento = document.getElementById('total-pagar');
-
+const confirmarBtn = document.getElementById('confirmar-carrito');
 
 const MaxArticulos = 9;
 
@@ -18,6 +18,7 @@ function cargarEventListeners() {
     document.addEventListener('DOMContentLoaded', () => {
         articulosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
         carritoHTML();
+        toggleConfirmarCompraBtn();
     })
 
     /** Cuando agregar un curso presionando "Agregar al Carrito" */
@@ -30,7 +31,18 @@ function cargarEventListeners() {
     vaciarCarritoBtn.addEventListener('click', vaciarCarrito)
 }
 
-//Funciones
+/** Funcion Boton Confirmar Compra */
+function toggleConfirmarCompraBtn() {
+    if(articulosCarrito.length === 0) {
+        confirmarBtn.style.display = 'none'
+        vaciarCarritoBtn.style.display = 'none'
+    }else{
+        confirmarBtn.style.display = 'block'
+        vaciarCarritoBtn.style.display = 'block'
+    }
+}
+
+//Funciones Agregar Producto
 function agregarProducto(e) {
     e.preventDefault()
 
@@ -125,6 +137,7 @@ function carritoHTML() {
     actualizarNotificacionCarrito();
     actualizarTotalPagar();
     agregarEventListenersCantidad();
+    toggleConfirmarCompraBtn();
 }
 
 /** Elimina los articulos del tbody */
@@ -158,6 +171,7 @@ function vaciarCarrito() {
     actualizarNotificacionCarrito();
     sincronizarLocalStorage();
     actualizarTotalPagar();
+    toggleConfirmarCompraBtn();
 }
 
 function sincronizarLocalStorage() {
