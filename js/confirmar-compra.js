@@ -114,12 +114,11 @@ function confirmarOrden(e) {
         toast.classList.add('hidden');
         
         setTimeout(() => {
+            vaciarCarrito(); 
             window.location.href = 'tienda.html';
         }, 500);
     }, 3000); // Tiempo en milisegundos
     
-    // Vaciar el carrito
-    vaciarCarrito(); 
 }
 
 
