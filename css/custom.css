@@ -183,6 +183,7 @@ header {
   
   .producto:last-of-type {
     margin-bottom: 0;
+    align-items: center;
   }
   
   .texto-producto {
@@ -727,6 +728,56 @@ opacity: var(--bs-btn-disabled-opacity);
     border-color: var(--bs-btn-disabled-border-color);
     opacity: var(--bs-btn-disabled-opacity);
 }
+
+
+/* Estilos para la sección de integrantes del equipo */
+.integrantes-equipo {
+    padding: 2rem 0;
+    margin-top: 5rem;
+}
+
+.integrantes-equipo .contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.integrantes-equipo h2 {
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.perfil {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 600px;
+}
+
+.imagen-perfil {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 1rem;
+    object-fit: cover;
+}
+
+.info-perfil h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    color: #444;
+}
+
+.info-perfil p {
+    margin: 0.25rem 0;
+    color: #666;
+}
+
 
 
 .footer {
