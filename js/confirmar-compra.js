@@ -6,6 +6,7 @@ const carrito = document.querySelector('#carrito');
 const contenedorCarrito = document.querySelector('#lista-carrito tbody');
 const totalPagarElemento = document.getElementById('total-pagar');
 const confirmarBtn = document.querySelector('.agregar-carrito');
+// const paisDisplay = document.getElementById('pais');
 
 
 
@@ -16,6 +17,7 @@ function cargarEventListeners() {
         // Cargar carrito desde localStorage
         articulosCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
         carritoHTML(); 
+        obtenerUbicacion();
     });
     
     carrito.addEventListener('click', eliminarProducto);
@@ -163,3 +165,54 @@ function vaciarCarrito() {
     sincronizarLocalStorage();
     actualizarTotalPagar();
 }
+
+async function obtenerUbicacion() {
+    const paisDisplay = document.getElementById('pais');
+    const cargaDisplay = document.getElementById('cargando');
+    
+    cargaDisplay.textContent = 'Cargando ubicación...';
+    
+    if (navigator.geolocation) {
+        try {
+            obtenerPais();
+            // Intentar obtener el país con reintentos
+            const reintentosMaximos = 3;
+            let pais;
+            for (let i = 0; i < reintentosMaximos; i++) {
+                pais = await obtenerPais();
+                if (pais !== 'No se pudo obtener la ubicación') {
+                    break;
+                }
+            }
+
+            // Mostrar el país en el elemento correspondiente
+            paisDisplay.textContent = pais;
+
+        } catch (error) {
+            console.error('Error al obtener la ubicación:', error);
+            paisDisplay.textContent = 'No se pudo obtener la ubicación';
+        } finally {
+            cargaDisplay.textContent = ''; // Limpiar el mensaje de carga
+        }
+    } else {
+        paisDisplay.textContent = 'Geolocalización no soportada';
+        cargaDisplay.textContent = ''; // Limpiar el mensaje de carga
+    }
+}
+
+async function obtenerPais() {
+    const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+
+    const { latitude, longitude } = position.coords;
+
+    try {
+        const response = await fetch(`https://geocode.xyz/${latitude},${longitude}?geoit=json`);
+        const data = await response.json();
+        return data.country || 'Ubicación Desconocido';
+    } catch (error) {
+        console.error('Error al obtener la ubicación desde el servicio de geocodificación:', error);
+        return 'No se pudo obtener la ubicación';
+    }
+};
