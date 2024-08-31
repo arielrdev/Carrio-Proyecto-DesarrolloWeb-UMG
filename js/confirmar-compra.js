@@ -6,7 +6,6 @@ const carrito = document.querySelector('#carrito');
 const contenedorCarrito = document.querySelector('#lista-carrito tbody');
 const totalPagarElemento = document.getElementById('total-pagar');
 const confirmarBtn = document.querySelector('.agregar-carrito');
-// const paisDisplay = document.getElementById('pais');
 
 
 
@@ -74,6 +73,7 @@ function carritoHTML() {
 
     actualizarTotalPagar();
     agregarEventListenersCantidad();
+    actualizarEstadoBoton();
 
 }
 
@@ -216,3 +216,12 @@ async function obtenerPais() {
         return 'No se pudo obtener la ubicación';
     }
 };
+
+function actualizarEstadoBoton() {
+    if(!articulosCarrito.length) {
+        confirmarBtn.style.display = 'none'
+    }else {
+        confirmarBtn.style.display = 'block'
+
+    }
+}
